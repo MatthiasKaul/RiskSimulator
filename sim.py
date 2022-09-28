@@ -1,4 +1,6 @@
 from random import randint
+import sys
+
 
 def playRound(attackers, defenders):
     effectiveAttackers = min(3, attackers)
@@ -28,9 +30,12 @@ def playRound(attackers, defenders):
 
     return atkLoss, defLoss
 
-attackers = 1000000
-defenders = 1000000
 
+
+
+
+attackers = int(sys.argv[1])
+defenders = int(sys.argv[2])
 while(attackers > 0 and defenders > 0):
     aL, dL = playRound(attackers, defenders)
     attackers -= aL
