@@ -17,7 +17,7 @@ class GameRecord:
     def __repr__(self):
         print(f"{self.attackerName} attacked {self.defenderName} with {self.attackers} against {self.defenders} units. {self.attackerName} lost {self.atkLosses} units, {self.defenderName} lost {self.defLosses}")
     def __str__(self):
-        return f"{self.attackerName} attacked {self.defenderName} with {self.attackers} against {self.defenders} units. {self.attackerName} lost {self.atkLosses} units, {self.defenderName} lost {self.defLosses}"
+        return f"{self.attackerName} | {self.defenderName} | {self.attackers} | {self.defenders} | {self.atkLosses} | {self.defLosses}\n"
 GameHistory = []
 players = []
 
@@ -212,6 +212,7 @@ while True:
     window['__DEFENDERS'].Update(defenders)
 
 
-for gr in GameHistory:
-    print(gr)
+with open("outLog.txt", "a") as f:
+    for gr in GameHistory:
+        f.write(str(gr))
 window.close()
