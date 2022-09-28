@@ -58,11 +58,18 @@ layout = [[[sg.Text('Attackers', size =(15, 1)), sg.InputText("3", key = "__ATTA
 window = sg.Window(title="Best Risk Simulator", layout=layout, margins=(200, 200), return_keyboard_events=True)
 while True:
     event, values = window.read()
-    
+
     if  event == sg.WIN_CLOSED or event == "Escape:9":
         break
-    attackers = int(values["__ATTACKERS"])
-    defenders = int(values["__DEFENDERS"])
+    try:
+        attackers = int(values["__ATTACKERS"])
+    except:
+        attackers = 0
+
+    try:
+        defenders = int(values["__DEFENDERS"])
+    except:
+        defenders = 0
 
     if event == "__INC_ATK":
         attackers += 1
