@@ -41,12 +41,31 @@ def showStatWindow():
                         defCasualties += gr.defLosses
                 effectiveWins[-1].append(f"{defCasualties} \ {atkCasualties}")
 
+    losses = dict()
+    kills = dict()
+    for p in players:
+        losses[p] = 0
+        kills[p] = 0
+    for gr in GameHistory:
+        losses[gr.attackerName] += gr.atkLosses
+        losses[gr.defenderName] += gr.defLosses
+        kills[gr.attackerName] += gr.defLosses
+        kills[gr.defenderName] += gr.atkLosses
+
+    losses = dict(sorted(losses.items(), key=lambda item: item[1], reverse = True))
+    kills = dict(sorted(kills.items(), key=lambda item: item[1], reverse = True ))
+
     tmp = [""]
     tmp += players
-    print(effectiveWins)
-    layout = [[sg.Text("Table Entry: Def Losses / Atk Losses", size=(150,1), justification='center')], [sg.Text("Attacker", size=(150,1), justification='center')], [sg.Text("Defender"), sg.Table(values=effectiveWins, alternating_row_color='grey',max_col_width=10,
-                    auto_size_columns=False, headings = tmp, num_rows = min(10, len(effectiveWins)))]]
+    layout = [[sg.Text("Table Entry: Def Losses / Atk Losses", size=(150,1), justification='center')],
+                [sg.Text("Attacker", size=(150,1), justification='center')], [sg.Text("Defender"), sg.Table(values=effectiveWins, alternating_row_color='grey',max_col_width=10,  auto_size_columns=False, headings = tmp, num_rows = min(10, len(effectiveWins)))],
+                [sg.Text("Losses:")],
+                [ sg.Table(values = [[k for k in losses], [losses[k] for k in losses]], num_rows = 2) ],
+                [sg.Text("Kills:")],
+                [sg.Table(values = [[k for k in kills], [kills[k] for k in kills]], num_rows = 2)]
+            ]
     window = sg.Window(title="Best Risk Simulator X-Treme Statistics", layout=layout, margins=(200, 200), background_color=DEFAULTBG)
+
     while True:
         event, values = window.read()
 
@@ -183,7 +202,6 @@ while True:
         gr.atkLosses = gr.attackers - attackers
         gr.defLosses = gr.defenders - defenders
         GameHistory.append(gr)
-        #print(f"{attackers} {defenders}")
     if event in ('\r', QT_ENTER_KEY1, QT_ENTER_KEY2, "Return:36"):
         attackers, defenders = simulate(attackers, defenders)
 
